@@ -10,6 +10,7 @@ public class Abrigo {
     private String nome;
     private String endereco;
     private String telefone;
+    private String email; // Novo campo para email
     private String senha; // Novo campo para senha
 
     // Getters e Setters
@@ -21,6 +22,8 @@ public class Abrigo {
     public void setEndereco(String endereco) { this.endereco = endereco; }
     public String getTelefone() { return telefone; }
     public void setTelefone(String telefone) { this.telefone = telefone; }
+    public String getEmail() { return email; }  // Getter para email
+    public void setEmail(String email) { this.email = email; }  // Setter para email
     public String getSenha() { return senha; }  // Getter para senha
     public void setSenha(String senha) { this.senha = senha; }  // Setter para senha
 }
