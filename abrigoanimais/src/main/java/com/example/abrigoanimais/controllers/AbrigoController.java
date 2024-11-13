@@ -1,6 +1,6 @@
 package com.exemplo.abrigosanimais.controller;
 
-
+import com.exemplo.abrigosanimais.dto.LoginResponse;
 import com.exemplo.abrigosanimais.dto.LoginRequest;
 import com.exemplo.abrigosanimais.model.Abrigo;
 import com.exemplo.abrigosanimais.repository.AbrigoRepository;
@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -52,13 +54,21 @@ public class AbrigoController {
         abrigoRepository.deleteById(id);
     }
 
-  @PostMapping("/login")
-public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+ @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     try {
+        // Validando login com o serviço
         boolean isValid = abrigoService.validarLogin(loginRequest.getEmail(), loginRequest.getSenha());
 
         if (isValid) {
-            return ResponseEntity.status(HttpStatus.OK).body("Login bem-sucedido");
+            // Buscando o nome do abrigo após a validação
+            String nomeAbrigo = abrigoService.buscarNomeAbrigoPorEmail(loginRequest.getEmail());
+
+            // Criando um objeto LoginResponse para enviar o nome do abrigo
+            LoginResponse response = new LoginResponse(nomeAbrigo);
+
+            // Retornando o nome do abrigo no corpo da resposta
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha incorretos");
         }
@@ -67,6 +77,8 @@ public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor");
     }
 }
+
+
 
 
     
